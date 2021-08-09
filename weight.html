@@ -130,19 +130,19 @@
 									<div class="row">
 										<div class="mb-3 col-md-6">
 											<label class="form-label" for="inputEmail4">Enter Date</label>
-											<input type="email" class="form-control" id="inputEmail4"
-												placeholder="Email">
+											<input class="form-control" type="text" name="datesingle" />
 										</div>
 										<div class="mb-3 col-md-6">
 											<label class="form-label" for="inputPassword4">Enter Time</label>
-											<input type="password" class="form-control" id="inputPassword4"
-												placeholder="Password">
+											<input type="time" class="form-control">
 										</div>
 
 										<div class="mb-3 col-md-6">
 											<label class="form-label" for="inputAddress">Enter Weight</label>
-											<input type="text" class="form-control" id="inputAddress"
-												placeholder="1234 Main St">
+											<div class="input-group mb-3">
+												<input type="text" placeholder="Enter Weight" class="form-control">
+												<span class="input-group-text">kg</span>
+											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="d-flex align-items-center" style="height:100%">
@@ -160,27 +160,42 @@
 							<table id="datatables-dashboard-traffic" class="table table-striped my-0">
 								<thead>
 									<tr>
-										<th>Source</th>
-										<th class="text-end">Users</th>
-										<th class="d-none d-xl-table-cell text-end">Sessions</th>
-										<th class="d-none d-xl-table-cell text-end">Bounce Rate</th>
-										<th class="d-none d-xl-table-cell text-end">Avg. Session Duration</th>
+										<th>Date</th>
+										<th class="text-end">Time</th>
+										<th class="d-none d-xl-table-cell text-end">Timestamp</th>
+										<th class="d-none d-xl-table-cell text-end">Unix</th>
+										<th class="d-none d-xl-table-cell text-end">Weight (kg)</th>
+										<th class="d-none d-xl-table-cell text-end">Change</th>
+										<th class="d-none d-xl-table-cell text-end"></th>
+
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
-										<td>Google</td>
-										<td class="text-end">1023</td>
-										<td class="d-none d-xl-table-cell text-end">1265</td>
-										<td class="d-none d-xl-table-cell text-end text-success">27.23%</td>
-										<td class="d-none d-xl-table-cell text-end">00:06:25</td>
+										<td>Tue 23 Mar 2021</td>
+										<td class="text-end">11:07 AM</td>
+										<td class="d-none d-xl-table-cell text-end">2021-03-23 11:07:00</td>
+										<td class="d-none d-xl-table-cell text-end">1616458020000</td>
+										<td class="d-none d-xl-table-cell text-end">119.1</td>
+										<td class="d-none d-xl-table-cell text-end text-success">1.8%</td>
+										<td class="d-none d-xl-table-cell text-end ">
+											<a class="dropdown-item text-danger" href="#"><i class="align-middle me-1"
+													data-feather="trash-2"></i>
+											</a>
+										</td>
 									</tr>
 									<tr>
-										<td>Bing</td>
-										<td class="text-end">504</td>
-										<td class="d-none d-xl-table-cell text-end">623</td>
-										<td class="d-none d-xl-table-cell text-end text-danger">66.76%</td>
-										<td class="d-none d-xl-table-cell text-end">00:04:42</td>
+										<td>Tue 23 Mar 2021</td>
+										<td class="text-end">11:07 AM</td>
+										<td class="d-none d-xl-table-cell text-end">2021-03-23 11:07:00</td>
+										<td class="d-none d-xl-table-cell text-end">1616458020000</td>
+										<td class="d-none d-xl-table-cell text-end">119.1</td>
+										<td class="d-none d-xl-table-cell text-end text-success">1.8%</td>
+										<td class="d-none d-xl-table-cell text-end ">
+											<a class="dropdown-item text-danger" href="#"><i class="align-middle me-1"
+													data-feather="trash-2"></i>
+											</a>
+										</td>
 									</tr>
 									<tr>
 										<td>Twitter</td>
@@ -277,6 +292,41 @@
 			}
 
 		}
+		//date
+
+		document.addEventListener("DOMContentLoaded", function () {
+			// Select2
+			$(".select2").each(function () {
+				$(this)
+					.wrap("<div class=\"position-relative\"></div>")
+					.select2({
+						placeholder: "Select value",
+						dropdownParent: $(this).parent()
+					});
+			})
+			// Daterangepicker
+
+			$("input[name=\"datesingle\"]").daterangepicker({
+				singleDatePicker: true,
+				showDropdowns: true
+			});
+
+
+			// Datetimepicker
+			$('#datetimepicker-minimum').datetimepicker();
+			$('#datetimepicker-view-mode').datetimepicker({
+				viewMode: 'years'
+			});
+			$('#datetimepicker-time').datetimepicker({
+				format: 'LT'
+			});
+			$('#datetimepicker-date').datetimepicker({
+				format: 'L'
+			});
+		});
+
+
+		//end date
 		document.addEventListener("DOMContentLoaded", function () {
 			// Line chart
 			var options = {
