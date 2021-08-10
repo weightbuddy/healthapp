@@ -1,0 +1,1 @@
+<script src="lib/js/app.js"></script>
