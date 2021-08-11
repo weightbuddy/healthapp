@@ -1,3 +1,7 @@
+<?php
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +12,7 @@
     <meta name="description" content="Responsive Bootstrap 5 Admin &amp; Dashboard Template">
     <meta name="author" content="Bootlab">
 
-    <title>Sign In | AppStack - Admin &amp; Dashboard Template</title>
+    <title><?= $pgtitle; ?></title>
     <link rel="shortcut icon" href="img/favicon.ico">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
