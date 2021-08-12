@@ -1,13 +1,6 @@
 <?php
 $pgtitle = "Weight";
 include_once('includes/header.php');
-include_once("classes/DbFunctions.php");
-include_once("classes/Validation.php");
-
-$dbFunctions = new DbFunctions();
-$validation = new Validation();
-$id = $_SESSION['id'];
-$result = $dbFunctions->getData("select * from weight where userID=$id ORDER BY ts DESC");
 ?>
 
 
@@ -95,31 +88,7 @@ $result = $dbFunctions->getData("select * from weight where userID=$id ORDER BY 
 
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <?php
-                                    foreach ($result as $key => $res) {
-                                        $datetime = explode(" ", $res['ts']);
-                                        $date = date('D d M Y', strtotime($datetime[0]));
-                                        $time = date('h:i: A', strtotime($datetime[1]));
-
-                                    ?>
-                                    <tr>
-                                        <td><?= $date; ?></td>
-                                        <td class="text-end"><?= $time ?></td>
-                                        <td class="d-none d-xl-table-cell text-end"><?= $res['ts']; ?></td>
-                                        <td class="d-none d-xl-table-cell text-end"><?= $res['unix']; ?></td>
-                                        <td class="d-none d-xl-table-cell text-end"><?= $res['weight']; ?></td>
-                                        <td class="d-none d-xl-table-cell text-end text-success">1.8%</td>
-                                        <td class="d-none d-xl-table-cell text-end ">
-                                            <a class="dropdown-item text-danger" href="#"><i class="align-middle me-1"
-                                                    data-feather="trash-2"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <?php
-                                    }
-
-                                    ?>
+                                <tbody id="tbody">
                                 </tbody>
                             </table>
                         </div>
@@ -204,7 +173,7 @@ $result = $dbFunctions->getData("select * from weight where userID=$id ORDER BY 
         var ts = datetime
         var unix = new Date(datetime).getTime()
         console.log(ts, weight)
-        // Fire off the request to /form.php
+
         request = $.ajax({
             url: "addWeight.php",
             type: "post",
@@ -220,6 +189,8 @@ $result = $dbFunctions->getData("select * from weight where userID=$id ORDER BY 
             // Log a message to the console
             $inputs.prop("value", "");
             console.log("Hooray, it worked!", response);
+
+            getWeightData();
         });
 
         // Callback handler that will be called on failure
@@ -239,7 +210,73 @@ $result = $dbFunctions->getData("select * from weight where userID=$id ORDER BY 
         });
 
     })
+    getWeightData();
 
+    function getWeightData() {
+        // Fire off the request to /form.php
+        request = $.ajax({
+            url: "getWeight.php",
+            type: "get",
+        });
+
+        // Callback handler that will be called on success
+        request.done(function(response, textStatus, jqXHR) {
+            // Log a message to the console
+            console.log("res", JSON.parse(response));
+            const tb = document.getElementById('tbody');
+            const data = JSON.parse(response);
+            data.forEach((d, index) => {
+                const date = moment(new Date(d.ts)).format("ddd D MMM YYYY")
+                const time = moment(new Date(d.ts)).format("h:mm a")
+                if (index === 0) {
+                    tb.innerHTML = `
+                    <tr>
+                                        <td>${date}</td>
+                                        <td class="text-end">${time}</td>
+                                        <td class="d-none d-xl-table-cell text-end">${d.ts}</td>
+                                        <td class="d-none d-xl-table-cell text-end">${d.unix}</td>
+                                        <td class="d-none d-xl-table-cell text-end">${d.weight}</td>
+                                        <td class="d-none d-xl-table-cell text-end text-success">1.8%</td>
+                                        <td class="d-none d-xl-table-cell text-end ">
+                                            <a class="dropdown-item text-danger" href="#"><i class="align-middle me-1"
+                                                    data-feather="trash-2"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                    `
+                } else {
+                    tb.innerHTML += `
+                    <tr>
+                                        <td>${date}</td>
+                                        <td class="text-end">${time}</td>
+                                        <td class="d-none d-xl-table-cell text-end">${d.ts}</td>
+                                        <td class="d-none d-xl-table-cell text-end">${d.unix}</td>
+                                        <td class="d-none d-xl-table-cell text-end">${d.weight}</td>
+                                        <td class="d-none d-xl-table-cell text-end text-success">1.8%</td>
+                                        <td class="d-none d-xl-table-cell text-end ">
+                                            <a class="dropdown-item text-danger" href="#"><i class="align-middle me-1"
+                                                    data-feather="trash-2"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                    `
+                }
+            })
+
+
+        });
+
+        // Callback handler that will be called on failure
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+            // Log the error to the console
+            console.error(
+                "The following error occurred: " +
+                textStatus, errorThrown
+            );
+        });
+
+
+    }
 
 
 
