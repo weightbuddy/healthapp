@@ -50,27 +50,28 @@ $result = $dbFunctions->getData("select * from weight where userID=$id ORDER BY 
                     <div class="col-md-12" id="add-weight">
                         <div class="card">
                             <div class="card-body">
-                                <form>
+                                <form method="POST" id="weightForm">
                                     <div class="row">
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label" for="inputEmail4">Enter Date</label>
-                                            <input class="form-control" type="text" name="datesingle" />
+                                            <input class="form-control" id="date" type="text" name="datesingle" />
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label" for="inputPassword4">Enter Time</label>
-                                            <input type="time" class="form-control">
+                                            <input type="time" name="time" id="time" class="form-control">
                                         </div>
 
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label" for="inputAddress">Enter Weight</label>
                                             <div class="input-group mb-3">
-                                                <input type="text" placeholder="Enter Weight" class="form-control">
+                                                <input type="text" name="weight" id="weight" placeholder="Enter Weight"
+                                                    class="form-control">
                                                 <span class="input-group-text">kg</span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="d-flex align-items-center" style="height:100%">
-                                                <button type=" submit" class="btn btn-warning">Add</button>
+                                                <button type="submit" name="submit" class="btn btn-warning">Add</button>
                                             </div>
                                         </div>
                                     </div>
@@ -119,61 +120,6 @@ $result = $dbFunctions->getData("select * from weight where userID=$id ORDER BY 
                                     }
 
                                     ?>
-                                    <tr>
-                                        <td>Tue 23 Mar 2021</td>
-                                        <td class="text-end">11:07 AM</td>
-                                        <td class="d-none d-xl-table-cell text-end">2021-03-23 11:07:00</td>
-                                        <td class="d-none d-xl-table-cell text-end">1616458020000</td>
-                                        <td class="d-none d-xl-table-cell text-end">119.1</td>
-                                        <td class="d-none d-xl-table-cell text-end text-success">1.8%</td>
-                                        <td class="d-none d-xl-table-cell text-end ">
-                                            <a class="dropdown-item text-danger" href="#"><i class="align-middle me-1"
-                                                    data-feather="trash-2"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Twitter</td>
-                                        <td class="text-end">462</td>
-                                        <td class="d-none d-xl-table-cell text-end">571</td>
-                                        <td class="d-none d-xl-table-cell text-end text-success">31.53%</td>
-                                        <td class="d-none d-xl-table-cell text-end">00:08:05</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Pinterest</td>
-                                        <td class="text-end">623</td>
-                                        <td class="d-none d-xl-table-cell text-end">770</td>
-                                        <td class="d-none d-xl-table-cell text-end text-danger">52.81%</td>
-                                        <td class="d-none d-xl-table-cell text-end">00:03:10</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Facebook</td>
-                                        <td class="text-end">812</td>
-                                        <td class="d-none d-xl-table-cell text-end">1003</td>
-                                        <td class="d-none d-xl-table-cell text-end text-success">24.83%</td>
-                                        <td class="d-none d-xl-table-cell text-end">00:05:56</td>
-                                    </tr>
-                                    <tr>
-                                        <td>DuckDuckGo</td>
-                                        <td class="text-end">693</td>
-                                        <td class="d-none d-xl-table-cell text-end">856</td>
-                                        <td class="d-none d-xl-table-cell text-end text-success">37.36%</td>
-                                        <td class="d-none d-xl-table-cell text-end">00:09:12</td>
-                                    </tr>
-                                    <tr>
-                                        <td>GitHub</td>
-                                        <td class="text-end">713</td>
-                                        <td class="d-none d-xl-table-cell text-end">881</td>
-                                        <td class="d-none d-xl-table-cell text-end text-success">38.09%</td>
-                                        <td class="d-none d-xl-table-cell text-end">00:06:19</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Direct</td>
-                                        <td class="text-end">872</td>
-                                        <td class="d-none d-xl-table-cell text-end">1077</td>
-                                        <td class="d-none d-xl-table-cell text-end text-success">32.70%</td>
-                                        <td class="d-none d-xl-table-cell text-end">00:09:18</td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -228,18 +174,83 @@ $result = $dbFunctions->getData("select * from weight where userID=$id ORDER BY 
         }
 
     }
+
+    $("#weightForm").submit(function(event) {
+
+        // Prevent default posting of form - put here to work in case of errors
+        event.preventDefault();
+
+        var $form = $(this);
+
+
+        // Let's select and cache all the fields
+        var $inputs = $form.find("input, select, button, textarea");
+
+        var time = document.getElementById('time').value;
+        var date = document.getElementById('date').value;
+        var weight = document.getElementById('weight').value;
+
+        $inputs.prop("disabled", true);
+        if (!time || !date || !weight) {
+            alert("Please must fill all fields");
+            $inputs.prop("disabled", false);
+            return;
+        }
+        var dateSet = date.split('/')
+        dateSet = `${dateSet[2]}-${dateSet[0]}-${dateSet[1]}`
+        var datetime = `${dateSet} ${time}`;
+
+
+        var ts = datetime
+        var unix = new Date(datetime).getTime()
+        console.log(ts, weight)
+        // Fire off the request to /form.php
+        request = $.ajax({
+            url: "addWeight.php",
+            type: "post",
+            data: {
+                ts,
+                unix,
+                weight
+            }
+        });
+
+        // Callback handler that will be called on success
+        request.done(function(response, textStatus, jqXHR) {
+            // Log a message to the console
+            $inputs.prop("value", "");
+            console.log("Hooray, it worked!", response);
+        });
+
+        // Callback handler that will be called on failure
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+            // Log the error to the console
+            console.error(
+                "The following error occurred: " +
+                textStatus, errorThrown
+            );
+        });
+
+        // Callback handler that will be called regardless
+        // if the request failed or succeeded
+        request.always(function() {
+            // Reenable the inputs
+            $inputs.prop("disabled", false);
+        });
+
+    })
+
+
+
+
+
+
+
+
     //date
 
     document.addEventListener("DOMContentLoaded", function() {
-        // Select2
-        $(".select2").each(function() {
-            $(this)
-                .wrap("<div class=\"position-relative\"></div>")
-                .select2({
-                    placeholder: "Select value",
-                    dropdownParent: $(this).parent()
-                });
-        })
+
         // Daterangepicker
 
         $("input[name=\"datesingle\"]").daterangepicker({
@@ -296,7 +307,8 @@ $result = $dbFunctions->getData("select * from weight where userID=$id ORDER BY 
                 style: "hollow", // full, hollow, inverted
             },
             xaxis: {
-                categories: ["01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan", "08 Jan",
+                categories: ["01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan",
+                    "08 Jan",
                     "09 Jan", "10 Jan", "11 Jan", "12 Jan"
                 ],
             },

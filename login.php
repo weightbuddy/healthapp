@@ -1,5 +1,4 @@
 <?php
-session_start();
 $pgtitle = "Login";
 require_once('./includes/header.php');
 include_once("classes/DbFunctions.php");
@@ -60,13 +59,11 @@ if (isset($_POST['submit'])) {
                                         <form id="validation-form" method="post">
                                             <div class="mb-3 error-placeholder">
                                                 <label class="form-label">Email</label>
-                                                <input class="form-control form-control-lg" type="email"
-                                                    name="validation-email" placeholder="Enter your email" />
+                                                <input class="form-control form-control-lg" type="email" name="validation-email" placeholder="Enter your email" />
                                             </div>
                                             <div class="mb-3 error-placeholder">
                                                 <label class="form-label">Password</label>
-                                                <input class="form-control form-control-lg" type="password"
-                                                    name="validation-password" placeholder="Enter your password" />
+                                                <input class="form-control form-control-lg" type="password" name="validation-password" placeholder="Enter your password" />
                                             </div>
                                             <small>
                                                 <a href="pages-reset-password.html">Forgot password?</a>
