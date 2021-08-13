@@ -229,8 +229,11 @@ include_once('includes/header.php');
             weightData = data;
             chartData()
             data.forEach((d, index) => {
+
                 const date = moment(new Date(d.ts)).format("ddd D MMM YYYY")
                 const time = moment(new Date(d.ts)).format("h:mm a")
+                const sevenDaysBefore = moment(new Date(date)).isoWeekday();
+                console.log('seven', sevenDaysBefore)
                 if (index === 0) {
                     tb.innerHTML = `
                     <tr>
