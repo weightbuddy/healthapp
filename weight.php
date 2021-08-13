@@ -240,10 +240,9 @@ include_once('includes/header.php');
                                         <td class="d-none d-xl-table-cell text-end">${d.unix}</td>
                                         <td class="d-none d-xl-table-cell text-end">${d.weight}</td>
                                         <td class="d-none d-xl-table-cell text-end text-success">1.8%</td>
-                                        <td class="d-none d-xl-table-cell text-end ">
-                                            <a class="dropdown-item text-danger" href="#"><i class="align-middle me-1"
-                                                    data-feather="trash-2"></i>
-                                            </a>
+                                        <td class="d-none d-xl-table-cell text-end">
+                                            <button class="btn btn-danger" onclick="deleteFun(${d.weightID})">Delete</button>
+                                        </td>
                                         </td>
                                     </tr>
                     `
@@ -256,10 +255,8 @@ include_once('includes/header.php');
                                         <td class="d-none d-xl-table-cell text-end">${d.unix}</td>
                                         <td class="d-none d-xl-table-cell text-end">${d.weight}</td>
                                         <td class="d-none d-xl-table-cell text-end text-success">1.8%</td>
-                                        <td class="d-none d-xl-table-cell text-end ">
-                                            <a class="dropdown-item text-danger" href="#"><i class="align-middle me-1"
-                                                    data-feather="trash-2"></i>
-                                            </a>
+                                        <td class="d-none d-xl-table-cell text-end">
+                                            <button class="btn btn-danger" onclick="deleteFun(${d.weightID})">Delete</button>
                                         </td>
                                     </tr>
                     `
@@ -282,7 +279,38 @@ include_once('includes/header.php');
     }
 
 
+    function deleteFun(id) {
+        console.log(id)
+        const con = confirm("Do you want to delete?");
+        if (con) {
+            // Fire off the request to /form.php
+            request = $.ajax({
+                url: "deleteWeight.php",
+                type: "post",
+                data: {
+                    weightID: id
+                }
+            });
 
+            // Callback handler that will be called on success
+            request.done(function(response, textStatus, jqXHR) {
+                // Log a message to the console
+                console.log("res", response);
+
+                getWeightData()
+            });
+
+            // Callback handler that will be called on failure
+            request.fail(function(jqXHR, textStatus, errorThrown) {
+                // Log the error to the console
+                console.error(
+                    "The following error occurred: " +
+                    textStatus, errorThrown
+                );
+            });
+
+        }
+    }
 
 
 

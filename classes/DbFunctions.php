@@ -39,7 +39,7 @@ class DbFunctions extends DbConfig
 	
 	public function delete($id, $table) 
 	{ 
-		$query = "DELETE FROM $table WHERE id = $id";
+		$query = "DELETE FROM $table WHERE weightID = $id";
 		
 		$result = $this->connection->query($query);
 	
@@ -56,4 +56,3 @@ class DbFunctions extends DbConfig
 		return $this->connection->real_escape_string($value);
 	}
 }
-?>
