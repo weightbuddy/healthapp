@@ -1,6 +1,6 @@
 <?php
-$pgtitle="Dashboard";
-    include_once("includes/header.php");
+$pgtitle = "Dashboard";
+include_once("includes/header.php");
 ?>
 
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-behavior="sticky">
@@ -41,115 +41,16 @@ $pgtitle="Dashboard";
                         </button>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-xxl-3 d-flex">
-                        <div class="card illustration flex-fill">
-                            <div class="card-body p-0 d-flex flex-fill">
-                                <div class="row g-0 w-100">
-                                    <div class="col-6">
-                                        <div class="illustration-text p-3 m-1">
-                                            <h4 class="illustration-text">Welcome Back, Chris!</h4>
-                                            <p class="mb-0">AppStack Dashboard</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 align-self-end text-end">
-                                        <img src="img/illustrations/customer-support.png" alt="Customer Support"
-                                            class="img-fluid illustration-img">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-xxl-3 d-flex">
-                        <div class="card flex-fill">
-                            <div class="card-body py-4">
-                                <div class="d-flex align-items-start">
-                                    <div class="flex-grow-1">
-                                        <h3 class="mb-2">$ 24.300</h3>
-                                        <p class="mb-2">Total Earnings</p>
-                                        <div class="mb-0">
-                                            <span class="badge badge-soft-success me-2"> <i
-                                                    class="mdi mdi-arrow-bottom-right"></i> +5.35% </span>
-                                            <span class="text-muted">Since last week</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-inline-block ms-3">
-                                        <div class="stat">
-                                            <i class="align-middle text-success" data-feather="dollar-sign"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-xxl-3 d-flex">
-                        <div class="card flex-fill">
-                            <div class="card-body py-4">
-                                <div class="d-flex align-items-start">
-                                    <div class="flex-grow-1">
-                                        <h3 class="mb-2">43</h3>
-                                        <p class="mb-2">Pending Orders</p>
-                                        <div class="mb-0">
-                                            <span class="badge badge-soft-danger me-2"> <i
-                                                    class="mdi mdi-arrow-bottom-right"></i> -4.25% </span>
-                                            <span class="text-muted">Since last week</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-inline-block ms-3">
-                                        <div class="stat">
-                                            <i class="align-middle text-danger" data-feather="shopping-bag"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-xxl-3 d-flex">
-                        <div class="card flex-fill">
-                            <div class="card-body py-4">
-                                <div class="d-flex align-items-start">
-                                    <div class="flex-grow-1">
-                                        <h3 class="mb-2">$ 18.700</h3>
-                                        <p class="mb-2">Total Revenue</p>
-                                        <div class="mb-0">
-                                            <span class="badge badge-soft-success me-2"> <i
-                                                    class="mdi mdi-arrow-bottom-right"></i> +8.65% </span>
-                                            <span class="text-muted">Since last week</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-inline-block ms-3">
-                                        <div class="stat">
-                                            <i class="align-middle text-info" data-feather="dollar-sign"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="col-12 col-lg-8 d-flex">
                         <div class="card flex-fill w-100">
                             <div class="card-header">
-                                <div class="card-actions float-end">
-                                    <div class="dropdown show">
-                                        <a href="#" data-bs-toggle="dropdown" data-bs-display="static">
-                                            <i class="align-middle" data-feather="more-horizontal"></i>
-                                        </a>
-
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h5 class="card-title mb-0">Sales / Revenue</h5>
+                                <h5 class="card-title mb-0">Weight Chart</h5>
                             </div>
                             <div class="card-body d-flex w-100">
                                 <div class="align-self-center chart chart-lg">
-                                    <canvas id="chartjs-dashboard-bar"></canvas>
+                                    <div id="apexcharts-area"></div>
                                 </div>
                             </div>
                         </div>
@@ -482,111 +383,78 @@ $pgtitle="Dashboard";
     <script src="lib/js/app.js"></script>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Bar chart
-        new Chart(document.getElementById("chartjs-dashboard-bar"), {
-            type: "bar",
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
-                    "Dec"
-                ],
-                datasets: [{
-                    label: "Last year",
-                    backgroundColor: window.theme.primary,
-                    borderColor: window.theme.primary,
-                    hoverBackgroundColor: window.theme.primary,
-                    hoverBorderColor: window.theme.primary,
-                    data: [54, 67, 41, 55, 62, 45, 55, 73, 60, 76, 48, 79],
-                    barPercentage: .325,
-                    categoryPercentage: .5
-                }, {
-                    label: "This year",
-                    backgroundColor: window.theme["primary-light"],
-                    borderColor: window.theme["primary-light"],
-                    hoverBackgroundColor: window.theme["primary-light"],
-                    hoverBorderColor: window.theme["primary-light"],
-                    data: [69, 66, 24, 48, 52, 51, 44, 53, 62, 79, 51, 68],
-                    barPercentage: .325,
-                    categoryPercentage: .5
-                }]
+    getWeightData()
+
+    function getWeightData() {
+        // Fire off the request to /form.php
+        request = $.ajax({
+            url: "getWeight.php",
+            type: "get",
+        });
+
+        // Callback handler that will be called on success
+        request.done(function(response, textStatus, jqXHR) {
+            // Log a message to the console
+            console.log("res", JSON.parse(response));
+            const tb = document.getElementById('tbody');
+            const data = JSON.parse(response);
+            chartData(data)
+
+        });
+
+        // Callback handler that will be called on failure
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+            // Log the error to the console
+            console.error(
+                "The following error occurred: " +
+                textStatus, errorThrown
+            );
+        });
+
+
+    }
+
+    function chartData(weightData) {
+        let serData = [],
+            categories = []
+        weightData.forEach(w => {
+            serData.push(Number(w.weight))
+            categories.push(w.ts)
+        })
+
+        // Area chart
+        var options = {
+            chart: {
+                height: 350,
+                type: "area",
             },
-            options: {
-                maintainAspectRatio: false,
-                cornerRadius: 15,
-                legend: {
-                    display: false
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: "smooth"
+            },
+            series: [{
+                name: "weight",
+                data: serData
+            }],
+            xaxis: {
+                type: "datetime",
+                categories: categories,
+            },
+            tooltip: {
+                x: {
+                    format: "dd/MM/yy HH:mm"
                 },
-                scales: {
-                    yAxes: [{
-                        gridLines: {
-                            display: false
-                        },
-                        stacked: false,
-                        ticks: {
-                            stepSize: 20
-                        },
-                        stacked: true,
-                    }],
-                    xAxes: [{
-                        stacked: false,
-                        gridLines: {
-                            color: "transparent"
-                        },
-                        stacked: true,
-                    }]
-                }
             }
-        });
-    });
-    </script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        $("#datetimepicker-dashboard").datetimepicker({
-            inline: true,
-            sideBySide: false,
-            format: "L"
-        });
-    });
-    </script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Pie chart
-        new Chart(document.getElementById("chartjs-dashboard-pie"), {
-            type: "pie",
-            data: {
-                labels: ["Direct", "Affiliate", "E-mail", "Other"],
-                datasets: [{
-                    data: [2602, 1253, 541, 1465],
-                    backgroundColor: [
-                        window.theme.primary,
-                        window.theme.warning,
-                        window.theme.danger,
-                        "#E8EAED"
-                    ],
-                    borderWidth: 5,
-                    borderColor: window.theme.white
-                }]
-            },
-            options: {
-                responsive: !window.MSInputMethodContext,
-                maintainAspectRatio: false,
-                cutoutPercentage: 70,
-                legend: {
-                    display: false
-                }
-            }
-        });
-    });
-    </script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        $("#datatables-dashboard-projects").DataTable({
-            pageLength: 6,
-            lengthChange: false,
-            bFilter: false,
-            autoWidth: false
-        });
-    });
+        }
+        document.querySelector("#apexcharts-area").innerHTML = ""
+        var chart = new ApexCharts(
+            document.querySelector("#apexcharts-area"),
+            options
+        );
+        chart.render();
+    }
     </script>
 
 </body>
