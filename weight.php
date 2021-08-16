@@ -17,15 +17,35 @@ include_once('includes/header.php');
                             <div class="card">
                                 <div class="card-header">
                                     <h5 class="card-title">Weight Chart</h5>
-                                    <div class="d-flex">
-                                        <button class="btn btn-primary me-2" onclick="getWeightByTime(1,null)">Last 7
-                                            days</button>
-                                        <button class="btn btn-primary me-2" onclick="getWeightByTime(4,null)">Last 4
-                                            weeks</button>
-                                        <button class="btn btn-primary me-2" onclick="getWeightByTime(null,1)">1 year
-                                        </button>
-                                        <button class="btn btn-primary me-2">Set your own</button>
-                                        <button class="btn btn-primary me-2" onclick="getWeightData()">All</button>
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-6 col-xl-2">
+                                            <button class="btn btn-primary me-2" style="width:100%"
+                                                onclick="getWeightByTime(1,null)">Last
+                                                7
+                                                days</button>
+                                        </div>
+                                        <div class="col-md-3 col-xl-2 col-sm-6 mt-sm-0 mt-md-0 mt-2">
+                                            <button class="btn btn-primary me-2" style="width:100%"
+                                                onclick="getWeightByTime(4,null)">Last
+                                                4
+                                                weeks</button>
+                                        </div>
+                                        <div class="col-md-2 col-sm-6 mt-sm-2 mt-md-0 mt-2">
+                                            <button class="btn btn-primary me-2" style="width:100%"
+                                                onclick="getWeightByTime(null,1)">1
+                                                year
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 col-xl-2 mt-sm-2 mt-md-0 mt-2">
+                                            <button class="btn btn-primary me-2" style="width:100%">Set your
+                                                own</button>
+                                        </div>
+                                        <div class="col-md-2 col-sm-6 mt-sm-2 mt-xl-0 mt-2">
+                                            <button class="btn btn-primary me-2" style="width:100%"
+                                                onclick="getWeightData()">All</button>
+                                        </div>
+
+
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -76,24 +96,24 @@ include_once('includes/header.php');
                         </div>
                     </div>
 
-                    <div class="col-12 col-lg-12 col-xl-12 d-flex">
+                    <div class="col-12">
                         <div class="card flex-fill">
-                            <table id="datatables-dashboard-traffic" class="table table-striped my-0">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th class="text-end">Time</th>
-                                        <th class="d-none d-xl-table-cell text-end">Timestamp</th>
-                                        <th class="d-none d-xl-table-cell text-end">Unix</th>
-                                        <th class="d-none d-xl-table-cell text-end">Weight (kg)</th>
-                                        <th class="d-none d-xl-table-cell text-end">Change</th>
-                                        <th class="d-none d-xl-table-cell text-end"></th>
+                            <div class="table-responsive">
+                                <table id="datatables-dashboard-traffic" class="table table-striped my-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th class="text-center">Time</th>
+                                            <th class="text-center">Weight (kg)</th>
+                                            <th class="text-center">Change (kg)</th>
+                                            <th class="text-center"></th>
 
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody">
-                                </tbody>
-                            </table>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -130,319 +150,16 @@ include_once('includes/header.php');
     </div>
 
     <script src="lib/js/app.js"></script>
+    <script src="lib/js/getWeightByTime.js"></script>
+    <script src="lib/js/deleteWeight.js"></script>
+    <script src="lib/js/getWeightData.js"></script>
+    <script src="lib/js/timePicker.js"></script>
+    <script src="lib/js/charts.js"></script>
+    <script src="lib/js/addWeight.js"></script>
 
     <script>
-    let isWeightBox = false;
-    document.getElementById('add-weight').style.display = "none";
-
-    function getWeightByTime(week, year) {
-        request = $.ajax({
-            url: "getWeightByTime.php",
-            type: "post",
-            data: {
-                week,
-                year
-            }
-        });
-
-        // Callback handler that will be called on success
-        request.done(function(response, textStatus, jqXHR) {
-            // Log a message to the console
-            console.log("Hooray, it worked!", JSON.parse(response));
-
-
-            chartData(JSON.parse(response))
-        });
-
-        // Callback handler that will be called on failure
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-            // Log the error to the console
-            console.error(
-                "The following error occurred: " +
-                textStatus, errorThrown
-            );
-        });
-    }
-
-    function addWeight() {
-
-        isWeightBox = !isWeightBox
-        console.log(isWeightBox)
-        if (isWeightBox == false) {
-            document.getElementById('add-weight').style.display = "none";
-        } else {
-            document.getElementById('add-weight').style.display = "block";
-        }
-
-    }
-
-    $("#weightForm").submit(function(event) {
-
-        // Prevent default posting of form - put here to work in case of errors
-        event.preventDefault();
-
-        var $form = $(this);
-
-
-        // Let's select and cache all the fields
-        var $inputs = $form.find("input, select, button, textarea");
-
-        var time = document.getElementById('time').value;
-        var date = document.getElementById('date').value;
-        var weight = document.getElementById('weight').value;
-
-        $inputs.prop("disabled", true);
-        if (!time || !date || !weight) {
-            alert("Please must fill all fields");
-            $inputs.prop("disabled", false);
-            return;
-        }
-        var dateSet = date.split('/')
-        dateSet = `${dateSet[2]}-${dateSet[0]}-${dateSet[1]}`
-        var datetime = `${dateSet} ${time}`;
-
-
-        var ts = datetime
-        var unix = new Date(datetime).getTime()
-        console.log(ts, weight)
-
-        request = $.ajax({
-            url: "addWeight.php",
-            type: "post",
-            data: {
-                ts,
-                unix,
-                weight
-            }
-        });
-
-        // Callback handler that will be called on success
-        request.done(function(response, textStatus, jqXHR) {
-            // Log a message to the console
-            $inputs.prop("value", "");
-            console.log("Hooray, it worked!", response);
-
-            getWeightData();
-        });
-
-        // Callback handler that will be called on failure
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-            // Log the error to the console
-            console.error(
-                "The following error occurred: " +
-                textStatus, errorThrown
-            );
-        });
-
-        // Callback handler that will be called regardless
-        // if the request failed or succeeded
-        request.always(function() {
-            // Reenable the inputs
-            $inputs.prop("disabled", false);
-        });
-
-    })
     getWeightData();
-
-    function getWeightData() {
-        // Fire off the request to /form.php
-        request = $.ajax({
-            url: "getWeight.php",
-            type: "get",
-        });
-
-        // Callback handler that will be called on success
-        request.done(function(response, textStatus, jqXHR) {
-            // Log a message to the console
-            console.log("res", JSON.parse(response));
-            const tb = document.getElementById('tbody');
-            const data = JSON.parse(response);
-            chartData(data)
-            let prevWeight = []
-            data.forEach(d => {
-                prevWeight.push(d.weight)
-            })
-            data.forEach((d, index) => {
-                const date = moment(new Date(d.ts)).format("ddd D MMM YYYY")
-                const time = moment(new Date(d.ts)).format("h:mm a")
-
-                if (index === 0) {
-                    tb.innerHTML = `
-                    <tr>
-                                        <td>${date}</td>
-                                        <td class="text-end">${time}</td>
-                                        <td class="d-none d-xl-table-cell text-end">${d.ts}</td>
-                                        <td class="d-none d-xl-table-cell text-end">${d.unix}</td>
-                                        <td class="d-none d-xl-table-cell text-end">${d.weight}</td>
-                                        <td class="d-none d-xl-table-cell text-end text-success">${getWeightChanges(prevWeight,d,index,data)}</td>
-                                        <td class="d-none d-xl-table-cell text-end">
-                                            <button class="btn btn-danger" onclick="deleteFun(${d.weightID})">Delete</button>
-                                        </td>
-                                        </td>
-                                    </tr>
-                    `
-                } else {
-                    tb.innerHTML += `
-                        <tr>
-                                        <td>${date}</td>
-                                        <td class="text-end">${time}</td>
-                                        <td class="d-none d-xl-table-cell text-end">${d.ts}</td>
-                                        <td class="d-none d-xl-table-cell text-end">${d.unix}</td>
-                                        <td class="d-none d-xl-table-cell text-end">${d.weight}</td>
-                                        <td class="d-none d-xl-table-cell text-end">${getWeightChanges(prevWeight,d,index,data)}</td>
-                                        <td class="d-none d-xl-table-cell text-end">
-                                            <button class="btn btn-danger" onclick="deleteFun(${d.weightID})">Delete</button>
-                                        </td>
-                                        </td>
-                                    </tr>
-                    `
-                }
-            })
-
-
-        });
-
-        // Callback handler that will be called on failure
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-            // Log the error to the console
-            console.error(
-                "The following error occurred: " +
-                textStatus, errorThrown
-            );
-        });
-
-
-    }
-
-    function getWeightChanges(prevWeight, d, index, data) {
-        if ((index + 1) == data.length) {
-            return ""
-        }
-
-        if (calculateChanges(prevWeight[index + 1], d.weight) > 0) {
-            return ` <div class="text-success"> ${calculateChanges(prevWeight[index + 1], d.weight)}</div>`
-        } else {
-            return ` <div class="text-danger"> ${calculateChanges(prevWeight[index + 1], d.weight)}</div>`
-        }
-
-    }
-
-    function calculateChanges(oldWeight, newWeight) {
-        if (oldWeight > newWeight) {
-            return (oldWeight - newWeight).toFixed(3)
-        } else {
-            return (newWeight - oldWeight).toFixed(3)
-        }
-    }
-
-    function deleteFun(id) {
-        console.log(id)
-        const con = confirm("Do you want to delete?");
-        if (con) {
-            // Fire off the request to /form.php
-            request = $.ajax({
-                url: "deleteWeight.php",
-                type: "post",
-                data: {
-                    weightID: id
-                }
-            });
-
-            // Callback handler that will be called on success
-            request.done(function(response, textStatus, jqXHR) {
-                // Log a message to the console
-                console.log("res", response);
-
-                getWeightData()
-            });
-
-            // Callback handler that will be called on failure
-            request.fail(function(jqXHR, textStatus, errorThrown) {
-                // Log the error to the console
-                console.error(
-                    "The following error occurred: " +
-                    textStatus, errorThrown
-                );
-            });
-
-        }
-    }
-
-
-
-
-    //date
-
-    document.addEventListener("DOMContentLoaded", function() {
-
-        // Daterangepicker
-
-        $("input[name=\"datesingle\"]").daterangepicker({
-            singleDatePicker: true,
-            showDropdowns: true
-        });
-
-
-        // Datetimepicker
-        $('#datetimepicker-minimum').datetimepicker();
-        $('#datetimepicker-view-mode').datetimepicker({
-            viewMode: 'years'
-        });
-        $('#datetimepicker-time').datetimepicker({
-            format: 'LT'
-        });
-        $('#datetimepicker-date').datetimepicker({
-            format: 'L'
-        });
-    });
     </script>
-
-    <script>
-    //chartData()
-
-    function chartData(weightData) {
-        let serData = [],
-            categories = []
-        weightData.forEach(w => {
-            serData.push(Number(w.weight))
-            categories.push(w.ts)
-        })
-
-        // Area chart
-        var options = {
-            chart: {
-                height: 350,
-                type: "area",
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                curve: "smooth"
-            },
-            series: [{
-                name: "weight",
-                data: serData
-            }],
-            xaxis: {
-                type: "datetime",
-                categories: categories,
-            },
-            tooltip: {
-                x: {
-                    format: "dd/MM/yy HH:mm"
-                },
-            }
-        }
-        document.querySelector("#apexcharts-area").innerHTML = ""
-        var chart = new ApexCharts(
-            document.querySelector("#apexcharts-area"),
-            options
-        );
-        chart.render();
-    }
-    </script>
-
 
 </body>
 

@@ -381,80 +381,11 @@ include_once("includes/header.php");
     </div>
 
     <script src="lib/js/app.js"></script>
+    <script src="lib/js/getWeightData.js"></script>
+    <script src="lib/js/charts.js"></script>
 
     <script>
     getWeightData()
-
-    function getWeightData() {
-        // Fire off the request to /form.php
-        request = $.ajax({
-            url: "getWeight.php",
-            type: "get",
-        });
-
-        // Callback handler that will be called on success
-        request.done(function(response, textStatus, jqXHR) {
-            // Log a message to the console
-            console.log("res", JSON.parse(response));
-            const tb = document.getElementById('tbody');
-            const data = JSON.parse(response);
-            chartData(data)
-
-        });
-
-        // Callback handler that will be called on failure
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-            // Log the error to the console
-            console.error(
-                "The following error occurred: " +
-                textStatus, errorThrown
-            );
-        });
-
-
-    }
-
-    function chartData(weightData) {
-        let serData = [],
-            categories = []
-        weightData.forEach(w => {
-            serData.push(Number(w.weight))
-            categories.push(w.ts)
-        })
-
-        // Area chart
-        var options = {
-            chart: {
-                height: 350,
-                type: "area",
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                curve: "smooth"
-            },
-            series: [{
-                name: "weight",
-                data: serData
-            }],
-            xaxis: {
-                type: "datetime",
-                categories: categories,
-            },
-            tooltip: {
-                x: {
-                    format: "dd/MM/yy HH:mm"
-                },
-            }
-        }
-        document.querySelector("#apexcharts-area").innerHTML = ""
-        var chart = new ApexCharts(
-            document.querySelector("#apexcharts-area"),
-            options
-        );
-        chart.render();
-    }
     </script>
 
 </body>
