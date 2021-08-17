@@ -37,7 +37,8 @@ include_once('includes/header.php');
                                             </button>
                                         </div>
                                         <div class="col-md-3 col-sm-6 col-xl-2 mt-sm-2 mt-md-0 mt-2">
-                                            <button class="btn btn-primary me-2" style="width:100%">Set your
+                                            <button class="btn btn-primary me-2" id="custom-picker"
+                                                style="width:100%">Set your
                                                 own</button>
                                         </div>
                                         <div class="col-md-2 col-sm-6 mt-sm-2 mt-xl-0 mt-2">
@@ -156,9 +157,29 @@ include_once('includes/header.php');
     <script src="lib/js/timePicker.js"></script>
     <script src="lib/js/charts.js"></script>
     <script src="lib/js/addWeight.js"></script>
+    <script src="lib/js/jquery.daterangepicker.min.js"></script>
+    <script src="lib/js/getWeightByCustom.js"></script>
 
     <script>
     getWeightData();
+
+    $('#custom-picker')
+        .dateRangePicker({
+            time: {
+                enabled: true
+            }
+        })
+        .bind('datepicker-change', function(event, obj) {
+            /* This event will be triggered after date range picker close animation */
+            const time1 = new Date(obj.date1).toLocaleTimeString('it-IT')
+            const time2 = new Date(obj.date2).toLocaleTimeString('it-IT')
+            const dt = obj.value.replace(/\s+/g, '').split('to');
+
+            const ftime1 = `${dt[0]} ${time1}`
+            const ftime2 = `${dt[1]} ${time2}`
+            console.log(ftime1, ftime2)
+            getWeightByCustom(ftime1, ftime2)
+        })
     </script>
 
 </body>

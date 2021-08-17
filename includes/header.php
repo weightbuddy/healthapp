@@ -16,6 +16,7 @@ session_start();
     <link rel="shortcut icon" href="img/favicon.ico">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="lib/css/daterangepicker.min.css" rel="stylesheet">
 
     <!-- Choose your prefered color scheme -->
     <!-- <link href="css/light.css" rel="stylesheet"> -->
