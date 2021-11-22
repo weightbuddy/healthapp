@@ -8,6 +8,7 @@ class DbConfig
 
 
 	/*My original db info - Open the database & define tables for this website
+
 $dbserver = "localhost"; my remote IP: 1.136.109.170
 $dbusername = "stemedu1_bertram";
 $dbpassword = "fh9H^g76{.?+";
