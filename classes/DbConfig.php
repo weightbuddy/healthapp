@@ -3,7 +3,7 @@ class DbConfig
 {	
 	private $_host = '203.170.84.9';
 	private $_username = 'stemedu1_bertram';
-	private $_password = "fh9H^g76{.?+";
+	private $_password = "ueTfiFghz8wy";
 	private $_database = 'stemedu1_weightbuddy';
 
 
@@ -11,7 +11,7 @@ class DbConfig
 
 $dbserver = "localhost"; my remote IP: 1.136.109.170
 $dbusername = "stemedu1_bertram";
-$dbpassword = "fh9H^g76{.?+";
+$dbpassword = "ueTfiFghz8wy";
 $dbname = "stemedu1_weightbuddy";*/
 	
 	protected $connection;
